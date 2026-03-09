@@ -1,0 +1,170 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f0f4f8; color: #1a202c; padding: 1.5rem; }
+  .card { background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.12); margin-bottom: 1rem; }
+  h1 { font-size: 1.3rem; font-weight: 800; margin-bottom: 1rem; color: #2d3748; }
+  h2 { font-size: 0.85rem; font-weight: 600; color: #4a5568; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  th { background: #f7fafc; padding: 0.65rem 0.75rem; text-align: left; font-weight: 600; color: #4a5568; border-bottom: 2px solid #e2e8f0; }
+  td { padding: 0.55rem 0.75rem; border-bottom: 1px solid #e2e8f0; vertical-align: top; }
+  tr:hover { background: #f7fafc; }
+  .changed-row { background: #fff5f5 !important; }
+  .pos { color: #276749; font-weight: 600; }
+  .neg { color: #c53030; font-weight: 600; }
+  .local { color: #3182ce; font-weight: 600; }
+  .ai { color: #805ad5; font-weight: 600; }
+  .badge { display: inline-block; padding: 0.2rem 0.5rem; border-radius: 6px; font-size: 0.75rem; font-weight: 600; }
+  .badge-blue { background: #bee3f8; color: #2b6cb0; }
+  .badge-purple { background: #e9d8fd; color: #553c9a; }
+  .badge-red { background: #fed7d7; color: #c53030; }
+  .badge-green { background: #c6f6d5; color: #276749; }
+  .arrow { color: #a0aec0; font-size: 0.9em; }
+  .metric { display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid #e2e8f0; font-size: 0.9rem; }
+  .metric:last-child { border-bottom: none; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin-bottom: 1rem; }
+  .stat-box { background: white; border-radius: 10px; padding: 1rem; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+  .stat-label { font-size: 0.7rem; color: #718096; text-transform: uppercase; letter-spacing: 0.05em; }
+  .stat-val { font-size: 1.6rem; font-weight: 800; margin-top: 0.25rem; }
+  .desc-change { font-size: 0.78em; }
+  .local-val { color: #3182ce; }
+  .ai-val { color: #805ad5; margin-top: 2px; }
+  .header-bar { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 1rem 1.5rem; border-radius: 12px; margin-bottom: 1rem; }
+  .header-bar h1 { color: white; }
+  .header-bar p { font-size: 0.85rem; opacity: 0.85; margin-top: 0.25rem; }
+</style></head><body>
+<div class="header-bar"><h1>Category Shifts: Where Local vs AI Diverge</h1><p>301 transactions re-categorized by AI out of 1394 total</p></div>
+<div class="card">
+  <h2>Category Reclassification Summary</h2>
+  <table>
+    <thead><tr><th>Local Category <span class="badge badge-blue">Round 1</span></th><th></th><th>AI Category <span class="badge badge-purple">Round 2</span></th><th>Count</th><th>Reason</th></tr></thead>
+    <tbody><tr class="changed-row">
+    <td class="local">Other Expense</td>
+    <td class="arrow">→</td>
+    <td class="ai">Office & Supplies</td>
+    <td><b>79</b></td>
+    <td style="color:#718096;font-size:0.8em">AI identified Amazon, retailer purchases local rules missed</td>
+  </tr><tr class="changed-row">
+    <td class="local">Other Expense</td>
+    <td class="arrow">→</td>
+    <td class="ai">COGS</td>
+    <td><b>62</b></td>
+    <td style="color:#718096;font-size:0.8em">AI recognized supplier/vendor payments as cost of goods</td>
+  </tr><tr class="changed-row">
+    <td class="local">Revenue</td>
+    <td class="arrow">→</td>
+    <td class="ai">Other Expense</td>
+    <td><b>39</b></td>
+    <td style="color:#718096;font-size:0.8em">Local rules misclassified outgoing payments as deposits</td>
+  </tr><tr class="changed-row">
+    <td class="local">Other Expense</td>
+    <td class="arrow">→</td>
+    <td class="ai">Professional Services</td>
+    <td><b>19</b></td>
+    <td style="color:#718096;font-size:0.8em">AI identified service contractor payments</td>
+  </tr><tr class="changed-row">
+    <td class="local">Revenue</td>
+    <td class="arrow">→</td>
+    <td class="ai">Other Income</td>
+    <td><b>17</b></td>
+    <td style="color:#718096;font-size:0.8em">AI correctly separated non-operating income</td>
+  </tr><tr class="changed-row">
+    <td class="local">Revenue</td>
+    <td class="arrow">→</td>
+    <td class="ai">Bank Fees</td>
+    <td><b>16</b></td>
+    <td style="color:#718096;font-size:0.8em">Local rules wrongly flagged fee-related transactions as revenue</td>
+  </tr><tr class="changed-row">
+    <td class="local">Other Expense</td>
+    <td class="arrow">→</td>
+    <td class="ai">Equipment & Maintenance</td>
+    <td><b>12</b></td>
+    <td style="color:#718096;font-size:0.8em">AI identified equipment/tech purchases</td>
+  </tr><tr class="changed-row">
+    <td class="local">Professional Services</td>
+    <td class="arrow">→</td>
+    <td class="ai">Tax Payment</td>
+    <td><b>12</b></td>
+    <td style="color:#718096;font-size:0.8em">AI recognized IRS/EFTPS payments local rules missed</td>
+  </tr><tr class="changed-row">
+    <td class="local">Revenue</td>
+    <td class="arrow">→</td>
+    <td class="ai">Transfer</td>
+    <td><b>9</b></td>
+    <td style="color:#718096;font-size:0.8em">AI identified internal account transfers</td>
+  </tr><tr class="changed-row">
+    <td class="local">Other Expense</td>
+    <td class="arrow">→</td>
+    <td class="ai">Utilities</td>
+    <td><b>9</b></td>
+    <td style="color:#718096;font-size:0.8em">AI recognized utility payments local rules missed</td>
+  </tr><tr class="changed-row">
+    <td class="local">Revenue</td>
+    <td class="arrow">→</td>
+    <td class="ai">Utilities</td>
+    <td><b>6</b></td>
+    <td style="color:#718096;font-size:0.8em">AI contextual analysis reassigned category</td>
+  </tr><tr class="changed-row">
+    <td class="local">Other Expense</td>
+    <td class="arrow">→</td>
+    <td class="ai">Insurance</td>
+    <td><b>4</b></td>
+    <td style="color:#718096;font-size:0.8em">AI contextual analysis reassigned category</td>
+  </tr><tr class="changed-row">
+    <td class="local">Other Expense</td>
+    <td class="arrow">→</td>
+    <td class="ai">Salaries & Wages</td>
+    <td><b>4</b></td>
+    <td style="color:#718096;font-size:0.8em">AI contextual analysis reassigned category</td>
+  </tr><tr class="changed-row">
+    <td class="local">Revenue</td>
+    <td class="arrow">→</td>
+    <td class="ai">COGS</td>
+    <td><b>3</b></td>
+    <td style="color:#718096;font-size:0.8em">AI contextual analysis reassigned category</td>
+  </tr><tr class="changed-row">
+    <td class="local">Revenue</td>
+    <td class="arrow">→</td>
+    <td class="ai">Owner Distribution</td>
+    <td><b>3</b></td>
+    <td style="color:#718096;font-size:0.8em">AI contextual analysis reassigned category</td>
+  </tr><tr class="changed-row">
+    <td class="local">Bank Fees</td>
+    <td class="arrow">→</td>
+    <td class="ai">Transfer</td>
+    <td><b>2</b></td>
+    <td style="color:#718096;font-size:0.8em">AI contextual analysis reassigned category</td>
+  </tr><tr class="changed-row">
+    <td class="local">Other Expense</td>
+    <td class="arrow">→</td>
+    <td class="ai">Revenue</td>
+    <td><b>1</b></td>
+    <td style="color:#718096;font-size:0.8em">AI contextual analysis reassigned category</td>
+  </tr><tr class="changed-row">
+    <td class="local">Revenue</td>
+    <td class="arrow">→</td>
+    <td class="ai">Equipment & Maintenance</td>
+    <td><b>1</b></td>
+    <td style="color:#718096;font-size:0.8em">AI contextual analysis reassigned category</td>
+  </tr><tr class="changed-row">
+    <td class="local">Utilities</td>
+    <td class="arrow">→</td>
+    <td class="ai">Other Expense</td>
+    <td><b>1</b></td>
+    <td style="color:#718096;font-size:0.8em">AI contextual analysis reassigned category</td>
+  </tr><tr class="changed-row">
+    <td class="local">Bank Fees</td>
+    <td class="arrow">→</td>
+    <td class="ai">Other Expense</td>
+    <td><b>1</b></td>
+    <td style="color:#718096;font-size:0.8em">AI contextual analysis reassigned category</td>
+  </tr><tr class="changed-row">
+    <td class="local">Bank Fees</td>
+    <td class="arrow">→</td>
+    <td class="ai">Revenue</td>
+    <td><b>1</b></td>
+    <td style="color:#718096;font-size:0.8em">AI contextual analysis reassigned category</td>
+  </tr></tbody>
+  </table>
+</div>
+</body></html>

@@ -1,0 +1,45 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build output
+dist/
+build/
+out/
+
+# Environment & secrets
+.env
+.env.local
+.env.*.local
+*.env
+
+# Vite
+.vite/
+
+# TypeScript incremental build
+*.tsbuildinfo
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Test artifacts (keep Comparison Results folder but not large data files)
+Test Data set 1/Comparison Results/comparison_data.json
+Test Data set 1/Comparison Results/local_transactions.csv
+Test Data set 1/Comparison Results/ai_transactions.csv
+
+# API keys
+.fintrack_api_key

@@ -1,0 +1,313 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f0f4f8; color: #1a202c; padding: 1.5rem; }
+  .card { background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.12); margin-bottom: 1rem; }
+  h1 { font-size: 1.3rem; font-weight: 800; margin-bottom: 1rem; color: #2d3748; }
+  h2 { font-size: 0.85rem; font-weight: 600; color: #4a5568; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  th { background: #f7fafc; padding: 0.65rem 0.75rem; text-align: left; font-weight: 600; color: #4a5568; border-bottom: 2px solid #e2e8f0; }
+  td { padding: 0.55rem 0.75rem; border-bottom: 1px solid #e2e8f0; vertical-align: top; }
+  tr:hover { background: #f7fafc; }
+  .changed-row { background: #fff5f5 !important; }
+  .pos { color: #276749; font-weight: 600; }
+  .neg { color: #c53030; font-weight: 600; }
+  .local { color: #3182ce; font-weight: 600; }
+  .ai { color: #805ad5; font-weight: 600; }
+  .badge { display: inline-block; padding: 0.2rem 0.5rem; border-radius: 6px; font-size: 0.75rem; font-weight: 600; }
+  .badge-blue { background: #bee3f8; color: #2b6cb0; }
+  .badge-purple { background: #e9d8fd; color: #553c9a; }
+  .badge-red { background: #fed7d7; color: #c53030; }
+  .badge-green { background: #c6f6d5; color: #276749; }
+  .arrow { color: #a0aec0; font-size: 0.9em; }
+  .metric { display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid #e2e8f0; font-size: 0.9rem; }
+  .metric:last-child { border-bottom: none; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin-bottom: 1rem; }
+  .stat-box { background: white; border-radius: 10px; padding: 1rem; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+  .stat-label { font-size: 0.7rem; color: #718096; text-transform: uppercase; letter-spacing: 0.05em; }
+  .stat-val { font-size: 1.6rem; font-weight: 800; margin-top: 0.25rem; }
+  .desc-change { font-size: 0.78em; }
+  .local-val { color: #3182ce; }
+  .ai-val { color: #805ad5; margin-top: 2px; }
+  .header-bar { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 1rem 1.5rem; border-radius: 12px; margin-bottom: 1rem; }
+  .header-bar h1 { color: white; }
+  .header-bar p { font-size: 0.85rem; opacity: 0.85; margin-top: 0.25rem; }
+</style></head><body>
+<div class="header-bar"><h1>Transaction-Level Differences (showing 1–30 of 1363)</h1><p><span class="badge badge-blue">Blue = Local Round 1</span> &nbsp; <span class="badge badge-purple">Purple = AI Round 2</span> &nbsp; <span class="badge badge-red">Red row = category changed</span></p></div>
+<div class="card" style="overflow-x:auto">
+  <table>
+    <thead><tr><th>Date</th><th>File</th><th>Bank Description</th><th>Amount</th><th>Description</th><th>Category</th><th>Confidence</th></tr></thead>
+    <tbody>
+  <tr class="">
+    <td style="font-size:0.8em">2025-01-02</td>
+    <td style="font-size:0.75em;color:#718096">20250131…5358-.pdf</td>
+    <td style="font-size:0.78em">Orig CO Name:Merchant Bankcd Orig ID:C592126793 Desc Da…</td>
+    <td class="pos" style="white-space:nowrap">$1,552.06</td>
+    <td class="desc-change"><div class="local-val">Orig Co Name:Merchant Bankcd Orig Desc D</div><div class="ai-val">→ Primos Dollar & Grocer - Bankcard Deposi</div></td>
+    <td><div class="local-val ">Revenue</div></td>
+    <td style="text-align:center"><div class="local-val">82</div><div class="ai-val">→ 95</div></td>
+  </tr>
+  <tr class="">
+    <td style="font-size:0.8em">2025-01-02</td>
+    <td style="font-size:0.75em;color:#718096">20250131…5358-.pdf</td>
+    <td style="font-size:0.78em">Orig CO Name:Merchant Bankcd Orig ID:C592126793 Desc Da…</td>
+    <td class="pos" style="white-space:nowrap">$1,330.65</td>
+    <td class="desc-change"><div class="local-val">Orig Co Name:Merchant Bankcd Orig Desc D</div><div class="ai-val">→ Primos Dollar & Grocer - Bankcard Deposi</div></td>
+    <td><div class="local-val ">Revenue</div></td>
+    <td style="text-align:center"><div class="local-val">82</div><div class="ai-val">→ 95</div></td>
+  </tr>
+  <tr class="changed-row">
+    <td style="font-size:0.8em">2025-01-02</td>
+    <td style="font-size:0.75em;color:#718096">20250131…5358-.pdf</td>
+    <td style="font-size:0.78em">Orig CO Name:Texas Lottery Orig ID:1246000089 Desc Date…</td>
+    <td class="pos" style="white-space:nowrap">$182.45</td>
+    <td class="desc-change"><div class="local-val">Orig Co Name:Texas Lottery Orig Desc Dat</div><div class="ai-val">→ Texas Lottery - Retailer Payment</div></td>
+    <td><div class="local-val badge badge-blue">Revenue</div><div class="ai-val badge badge-purple" style="margin-top:3px">→ Other Expense</div></td>
+    <td style="text-align:center"><div class="local-val">55</div><div class="ai-val">→ 85</div></td>
+  </tr>
+  <tr class="">
+    <td style="font-size:0.8em">2025-01-03</td>
+    <td style="font-size:0.75em;color:#718096">20250131…5358-.pdf</td>
+    <td style="font-size:0.78em">Orig CO Name:Merchant Bankcd Orig ID:C592126793 Desc Da…</td>
+    <td class="pos" style="white-space:nowrap">$1,150.19</td>
+    <td class="desc-change"><div class="local-val">Orig Co Name:Merchant Bankcd Orig Desc D</div><div class="ai-val">→ Primos Dollar & Grocer - Bankcard Deposi</div></td>
+    <td><div class="local-val ">Revenue</div></td>
+    <td style="text-align:center"><div class="local-val">82</div><div class="ai-val">→ 95</div></td>
+  </tr>
+  <tr class="">
+    <td style="font-size:0.8em">2025-01-06</td>
+    <td style="font-size:0.75em;color:#718096">20250131…5358-.pdf</td>
+    <td style="font-size:0.78em">Orig CO Name:Merchant Bankcd Orig ID:C592126793 Desc Da…</td>
+    <td class="pos" style="white-space:nowrap">$1,671.36</td>
+    <td class="desc-change"><div class="local-val">Orig Co Name:Merchant Bankcd Orig Desc D</div><div class="ai-val">→ Primos Dollar & Grocer - Bankcard Deposi</div></td>
+    <td><div class="local-val ">Revenue</div></td>
+    <td style="text-align:center"><div class="local-val">82</div><div class="ai-val">→ 95</div></td>
+  </tr>
+  <tr class="">
+    <td style="font-size:0.8em">2025-01-06</td>
+    <td style="font-size:0.75em;color:#718096">20250131…5358-.pdf</td>
+    <td style="font-size:0.78em">Orig CO Name:Merchant Bankcd Orig ID:C592126793 Desc Da…</td>
+    <td class="pos" style="white-space:nowrap">$1,079.57</td>
+    <td class="desc-change"><div class="local-val">Orig Co Name:Merchant Bankcd Orig Desc D</div><div class="ai-val">→ Primos Dollar & Grocer - Bankcard Deposi</div></td>
+    <td><div class="local-val ">Revenue</div></td>
+    <td style="text-align:center"><div class="local-val">82</div><div class="ai-val">→ 95</div></td>
+  </tr>
+  <tr class="">
+    <td style="font-size:0.8em">2025-01-06</td>
+    <td style="font-size:0.75em;color:#718096">20250131…5358-.pdf</td>
+    <td style="font-size:0.78em">Orig CO Name:Merchant Bankcd Orig ID:C592126793 Desc Da…</td>
+    <td class="pos" style="white-space:nowrap">$897.82</td>
+    <td class="desc-change"><div class="local-val">Orig Co Name:Merchant Bankcd Orig Desc D</div><div class="ai-val">→ Primos Dollar & Grocer - Bankcard Deposi</div></td>
+    <td><div class="local-val ">Revenue</div></td>
+    <td style="text-align:center"><div class="local-val">82</div><div class="ai-val">→ 95</div></td>
+  </tr>
+  <tr class="">
+    <td style="font-size:0.8em">2025-01-07</td>
+    <td style="font-size:0.75em;color:#718096">20250131…5358-.pdf</td>
+    <td style="font-size:0.78em">Orig CO Name:Merchant Bankcd Orig ID:C592126793 Desc Da…</td>
+    <td class="pos" style="white-space:nowrap">$919.81</td>
+    <td class="desc-change"><div class="local-val">Orig Co Name:Merchant Bankcd Orig Desc D</div><div class="ai-val">→ Primos Dollar & Grocer - Bankcard Deposi</div></td>
+    <td><div class="local-val ">Revenue</div></td>
+    <td style="text-align:center"><div class="local-val">82</div><div class="ai-val">→ 95</div></td>
+  </tr>
+  <tr class="changed-row">
+    <td style="font-size:0.8em">2025-01-07</td>
+    <td style="font-size:0.75em;color:#718096">20250131…5358-.pdf</td>
+    <td style="font-size:0.78em">Orig CO Name:Cds Orig ID:721463266 Desc Date:250106 CO …</td>
+    <td class="pos" style="white-space:nowrap">$327.00</td>
+    <td class="desc-change"><div class="local-val">Orig Co Name:Cds Orig Desc Date:250106 C</div><div class="ai-val">→ Search Commission - CDS Payment</div></td>
+    <td><div class="local-val badge badge-blue">Revenue</div><div class="ai-val badge badge-purple" style="margin-top:3px">→ Other Expense</div></td>
+    <td style="text-align:center"><div class="local-val">55</div><div class="ai-val">→ 65</div></td>
+  </tr>
+  <tr class="">
+    <td style="font-size:0.8em">2025-01-08</td>
+    <td style="font-size:0.75em;color:#718096">20250131…5358-.pdf</td>
+    <td style="font-size:0.78em">Orig CO Name:Merchant Bankcd Orig ID:C592126793 Desc Da…</td>
+    <td class="pos" style="white-space:nowrap">$876.28</td>
+    <td class="desc-change"><div class="local-val">Orig Co Name:Merchant Bankcd Orig Desc D</div><div class="ai-val">→ Primos Dollar & Grocer - Bankcard Deposi</div></td>
+    <td><div class="local-val ">Revenue</div></td>
+    <td style="text-align:center"><div class="local-val">82</div><div class="ai-val">→ 95</div></td>
+  </tr>
+  <tr class="">
+    <td style="font-size:0.8em">2025-01-09</td>
+    <td style="font-size:0.75em;color:#718096">20250131…5358-.pdf</td>
+    <td style="font-size:0.78em">Orig CO Name:Merchant Bankcd Orig ID:C592126793 Desc Da…</td>
+    <td class="pos" style="white-space:nowrap">$1,002.59</td>
+    <td class="desc-change"><div class="local-val">Orig Co Name:Merchant Bankcd Orig Desc D</div><div class="ai-val">→ Primos Dollar & Grocer - Bankcard Deposi</div></td>
+    <td><div class="local-val ">Revenue</div></td>
+    <td style="text-align:center"><div class="local-val">82</div><div class="ai-val">→ 95</div></td>
+  </tr>
+  <tr class="changed-row">
+    <td style="font-size:0.8em">2025-01-09</td>
+    <td style="font-size:0.75em;color:#718096">20250131…5358-.pdf</td>
+    <td style="font-size:0.78em">Orig CO Name:Itg Brands, LLC Orig ID:7942994213 Desc Da…</td>
+    <td class="pos" style="white-space:nowrap">$107.34</td>
+    <td class="desc-change"><div class="local-val">Orig Co Name:Itg Brands, Llc Orig Desc D</div><div class="ai-val">→ ITG Brands LLC - EDI Payment</div></td>
+    <td><div class="local-val badge badge-blue">Revenue</div><div class="ai-val badge badge-purple" style="margin-top:3px">→ Other Expense</div></td>
+    <td style="text-align:center"><div class="local-val">55</div><div class="ai-val">→ 70</div></td>
+  </tr>
+  <tr class="">
+    <td style="font-size:0.8em">2025-01-10</td>
+    <td style="font-size:0.75em;color:#718096">20250131…5358-.pdf</td>
+    <td style="font-size:0.78em">Deposit 2123052835</td>
+    <td class="pos" style="white-space:nowrap">$9,154.00</td>
+    <td class="desc-change"><div class="local-val">Deposit 2123052835</div><div class="ai-val">→ Deposit</div></td>
+    <td><div class="local-val ">Revenue</div></td>
+    <td style="text-align:center"><div class="local-val">82</div><div class="ai-val">→ 85</div></td>
+  </tr>
+  <tr class="">
+    <td style="font-size:0.8em">2025-01-10</td>
+    <td style="font-size:0.75em;color:#718096">20250131…5358-.pdf</td>
+    <td style="font-size:0.78em">Orig CO Name:Merchant Bankcd Orig ID:C592126793 Desc Da…</td>
+    <td class="pos" style="white-space:nowrap">$999.46</td>
+    <td class="desc-change"><div class="local-val">Orig Co Name:Merchant Bankcd Orig Desc D</div><div class="ai-val">→ Primos Dollar & Grocer - Bankcard Deposi</div></td>
+    <td><div class="local-val ">Revenue</div></td>
+    <td style="text-align:center"><div class="local-val">82</div><div class="ai-val">→ 95</div></td>
+  </tr>
+  <tr class="">
+    <td style="font-size:0.8em">2025-01-13</td>
+    <td style="font-size:0.75em;color:#718096">20250131…5358-.pdf</td>
+    <td style="font-size:0.78em">Orig CO Name:Merchant Bankcd Orig ID:C592126793 Desc Da…</td>
+    <td class="pos" style="white-space:nowrap">$1,259.75</td>
+    <td class="desc-change"><div class="local-val">Orig Co Name:Merchant Bankcd Orig Desc D</div><div class="ai-val">→ Primos Dollar & Grocer - Bankcard Deposi</div></td>
+    <td><div class="local-val ">Revenue</div></td>
+    <td style="text-align:center"><div class="local-val">82</div><div class="ai-val">→ 95</div></td>
+  </tr>
+  <tr class="">
+    <td style="font-size:0.8em">2025-01-13</td>
+    <td style="font-size:0.75em;color:#718096">20250131…5358-.pdf</td>
+    <td style="font-size:0.78em">Orig CO Name:Merchant Bankcd Orig ID:C592126793 Desc Da…</td>
+    <td class="pos" style="white-space:nowrap">$1,242.54</td>
+    <td class="desc-change"><div class="local-val">Orig Co Name:Merchant Bankcd Orig Desc D</div><div class="ai-val">→ Primos Dollar & Grocer - Bankcard Deposi</div></td>
+    <td><div class="local-val ">Revenue</div></td>
+    <td style="text-align:center"><div class="local-val">82</div><div class="ai-val">→ 95</div></td>
+  </tr>
+  <tr class="">
+    <td style="font-size:0.8em">2025-01-13</td>
+    <td style="font-size:0.75em;color:#718096">20250131…5358-.pdf</td>
+    <td style="font-size:0.78em">Orig CO Name:Merchant Bankcd Orig ID:C592126793 Desc Da…</td>
+    <td class="pos" style="white-space:nowrap">$1,058.89</td>
+    <td class="desc-change"><div class="local-val">Orig Co Name:Merchant Bankcd Orig Desc D</div><div class="ai-val">→ Primos Dollar & Grocer - Bankcard Deposi</div></td>
+    <td><div class="local-val ">Revenue</div></td>
+    <td style="text-align:center"><div class="local-val">82</div><div class="ai-val">→ 95</div></td>
+  </tr>
+  <tr class="">
+    <td style="font-size:0.8em">2025-01-14</td>
+    <td style="font-size:0.75em;color:#718096">20250131…5358-.pdf</td>
+    <td style="font-size:0.78em">Orig CO Name:Merchant Bankcd Orig ID:C592126793 Desc Da…</td>
+    <td class="pos" style="white-space:nowrap">$969.37</td>
+    <td class="desc-change"><div class="local-val">Orig Co Name:Merchant Bankcd Orig Desc D</div><div class="ai-val">→ Primos Dollar & Grocer - Bankcard Deposi</div></td>
+    <td><div class="local-val ">Revenue</div></td>
+    <td style="text-align:center"><div class="local-val">82</div><div class="ai-val">→ 95</div></td>
+  </tr>
+  <tr class="">
+    <td style="font-size:0.8em">2025-01-15</td>
+    <td style="font-size:0.75em;color:#718096">20250131…5358-.pdf</td>
+    <td style="font-size:0.78em">Orig CO Name:Merchant Bankcd Orig ID:C592126793 Desc Da…</td>
+    <td class="pos" style="white-space:nowrap">$861.02</td>
+    <td class="desc-change"><div class="local-val">Orig Co Name:Merchant Bankcd Orig Desc D</div><div class="ai-val">→ Primos Dollar & Grocer - Bankcard Deposi</div></td>
+    <td><div class="local-val ">Revenue</div></td>
+    <td style="text-align:center"><div class="local-val">82</div><div class="ai-val">→ 95</div></td>
+  </tr>
+  <tr class="changed-row">
+    <td style="font-size:0.8em">2025-01-15</td>
+    <td style="font-size:0.75em;color:#718096">20250131…5358-.pdf</td>
+    <td style="font-size:0.78em">Orig CO Name:Texas Lottery Orig ID:1246000089 Desc Date…</td>
+    <td class="pos" style="white-space:nowrap">$123.93</td>
+    <td class="desc-change"><div class="local-val">Orig Co Name:Texas Lottery Orig Desc Dat</div><div class="ai-val">→ Texas Lottery - Retailer Payment</div></td>
+    <td><div class="local-val badge badge-blue">Revenue</div><div class="ai-val badge badge-purple" style="margin-top:3px">→ Other Expense</div></td>
+    <td style="text-align:center"><div class="local-val">55</div><div class="ai-val">→ 85</div></td>
+  </tr>
+  <tr class="">
+    <td style="font-size:0.8em">2025-01-16</td>
+    <td style="font-size:0.75em;color:#718096">20250131…5358-.pdf</td>
+    <td style="font-size:0.78em">Orig CO Name:Merchant Bankcd Orig ID:C592126793 Desc Da…</td>
+    <td class="pos" style="white-space:nowrap">$880.86</td>
+    <td class="desc-change"><div class="local-val">Orig Co Name:Merchant Bankcd Orig Desc D</div><div class="ai-val">→ Primos Dollar & Grocer - Bankcard Deposi</div></td>
+    <td><div class="local-val ">Revenue</div></td>
+    <td style="text-align:center"><div class="local-val">82</div><div class="ai-val">→ 95</div></td>
+  </tr>
+  <tr class="">
+    <td style="font-size:0.8em">2025-01-17</td>
+    <td style="font-size:0.75em;color:#718096">20250131…5358-.pdf</td>
+    <td style="font-size:0.78em">Orig CO Name:Merchant Bankcd Orig ID:C592126793 Desc Da…</td>
+    <td class="pos" style="white-space:nowrap">$984.72</td>
+    <td class="desc-change"><div class="local-val">Orig Co Name:Merchant Bankcd Orig Desc D</div><div class="ai-val">→ Primos Dollar & Grocer - Bankcard Deposi</div></td>
+    <td><div class="local-val ">Revenue</div></td>
+    <td style="text-align:center"><div class="local-val">82</div><div class="ai-val">→ 95</div></td>
+  </tr>
+  <tr class="">
+    <td style="font-size:0.8em">2025-01-21</td>
+    <td style="font-size:0.75em;color:#718096">20250131…5358-.pdf</td>
+    <td style="font-size:0.78em">Orig CO Name:Merchant Bankcd Orig ID:C592126793 Desc Da…</td>
+    <td class="pos" style="white-space:nowrap">$1,057.85</td>
+    <td class="desc-change"><div class="local-val">Orig Co Name:Merchant Bankcd Orig Desc D</div><div class="ai-val">→ Primos Dollar & Grocer - Bankcard Deposi</div></td>
+    <td><div class="local-val ">Revenue</div></td>
+    <td style="text-align:center"><div class="local-val">82</div><div class="ai-val">→ 95</div></td>
+  </tr>
+  <tr class="">
+    <td style="font-size:0.8em">2025-01-21</td>
+    <td style="font-size:0.75em;color:#718096">20250131…5358-.pdf</td>
+    <td style="font-size:0.78em">Orig CO Name:Merchant Bankcd Orig ID:C592126793 Desc Da…</td>
+    <td class="pos" style="white-space:nowrap">$1,032.96</td>
+    <td class="desc-change"><div class="local-val">Orig Co Name:Merchant Bankcd Orig Desc D</div><div class="ai-val">→ Primos Dollar & Grocer - Bankcard Deposi</div></td>
+    <td><div class="local-val ">Revenue</div></td>
+    <td style="text-align:center"><div class="local-val">82</div><div class="ai-val">→ 95</div></td>
+  </tr>
+  <tr class="">
+    <td style="font-size:0.8em">2025-01-21</td>
+    <td style="font-size:0.75em;color:#718096">20250131…5358-.pdf</td>
+    <td style="font-size:0.78em">Orig CO Name:Merchant Bankcd Orig ID:C592126793 Desc Da…</td>
+    <td class="pos" style="white-space:nowrap">$1,032.80</td>
+    <td class="desc-change"><div class="local-val">Orig Co Name:Merchant Bankcd Orig Desc D</div><div class="ai-val">→ Primos Dollar & Grocer - Bankcard Deposi</div></td>
+    <td><div class="local-val ">Revenue</div></td>
+    <td style="text-align:center"><div class="local-val">82</div><div class="ai-val">→ 95</div></td>
+  </tr>
+  <tr class="">
+    <td style="font-size:0.8em">2025-01-21</td>
+    <td style="font-size:0.75em;color:#718096">20250131…5358-.pdf</td>
+    <td style="font-size:0.78em">Orig CO Name:Merchant Bankcd Orig ID:C592126793 Desc Da…</td>
+    <td class="pos" style="white-space:nowrap">$978.44</td>
+    <td class="desc-change"><div class="local-val">Orig Co Name:Merchant Bankcd Orig Desc D</div><div class="ai-val">→ Primos Dollar & Grocer - Bankcard Deposi</div></td>
+    <td><div class="local-val ">Revenue</div></td>
+    <td style="text-align:center"><div class="local-val">82</div><div class="ai-val">→ 95</div></td>
+  </tr>
+  <tr class="">
+    <td style="font-size:0.8em">2025-01-22</td>
+    <td style="font-size:0.75em;color:#718096">20250131…5358-.pdf</td>
+    <td style="font-size:0.78em">Orig CO Name:Merchant Bankcd Orig ID:C592126793 Desc Da…</td>
+    <td class="pos" style="white-space:nowrap">$795.42</td>
+    <td class="desc-change"><div class="local-val">Orig Co Name:Merchant Bankcd Orig Desc D</div><div class="ai-val">→ Primos Dollar & Grocer - Bankcard Deposi</div></td>
+    <td><div class="local-val ">Revenue</div></td>
+    <td style="text-align:center"><div class="local-val">82</div><div class="ai-val">→ 95</div></td>
+  </tr>
+  <tr class="">
+    <td style="font-size:0.8em">2025-01-23</td>
+    <td style="font-size:0.75em;color:#718096">20250131…5358-.pdf</td>
+    <td style="font-size:0.78em">Orig CO Name:Merchant Bankcd Orig ID:C592126793 Desc Da…</td>
+    <td class="pos" style="white-space:nowrap">$474.95</td>
+    <td class="desc-change"><div class="local-val">Orig Co Name:Merchant Bankcd Orig Desc D</div><div class="ai-val">→ Primos Dollar & Grocer - Bankcard Deposi</div></td>
+    <td><div class="local-val ">Revenue</div></td>
+    <td style="text-align:center"><div class="local-val">82</div><div class="ai-val">→ 95</div></td>
+  </tr>
+  <tr class="">
+    <td style="font-size:0.8em">2025-01-24</td>
+    <td style="font-size:0.75em;color:#718096">20250131…5358-.pdf</td>
+    <td style="font-size:0.78em">Deposit 1237209625</td>
+    <td class="pos" style="white-space:nowrap">$17,207.00</td>
+    <td class="desc-change"><div class="local-val">Deposit 1237209625</div><div class="ai-val">→ Deposit</div></td>
+    <td><div class="local-val ">Revenue</div></td>
+    <td style="text-align:center"><div class="local-val">82</div><div class="ai-val">→ 85</div></td>
+  </tr>
+  <tr class="">
+    <td style="font-size:0.8em">2025-01-24</td>
+    <td style="font-size:0.75em;color:#718096">20250131…5358-.pdf</td>
+    <td style="font-size:0.78em">Orig CO Name:Merchant Bankcd Orig ID:C592126793 Desc Da…</td>
+    <td class="pos" style="white-space:nowrap">$1,119.23</td>
+    <td class="desc-change"><div class="local-val">Orig Co Name:Merchant Bankcd Orig Desc D</div><div class="ai-val">→ Primos Dollar & Grocer - Bankcard Deposi</div></td>
+    <td><div class="local-val ">Revenue</div></td>
+    <td style="text-align:center"><div class="local-val">82</div><div class="ai-val">→ 95</div></td>
+  </tr></tbody>
+  </table>
+</div>
+</body></html>

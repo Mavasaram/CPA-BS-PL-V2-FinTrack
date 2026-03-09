@@ -1,8 +1,8 @@
 import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { Upload, FileText, CheckCircle, AlertCircle, Loader2, Sparkles, X, Bot, Key, Eye, EyeOff } from 'lucide-react';
+import { Upload, FileText, CheckCircle, AlertCircle, Loader2, X, Bot, Key, Eye, EyeOff } from 'lucide-react';
 import { useFinancialStore } from '../../store/financialStore';
-import { extractTransactionsFromPDF, generateDemoTransactions } from '../../utils/pdfExtractor';
+import { extractTransactionsFromPDF } from '../../utils/pdfExtractor';
 import { normalizeWithAI } from '../../utils/aiNormalizer';
 import type { Transaction, UploadedFile } from '../../types';
 
@@ -26,8 +26,10 @@ export default function UploadZone() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [fileObjects, setFileObjects] = useState<Map<string, File>>(new Map());
 
-  // API key state
-  const [apiKey, setApiKey] = useState(() => localStorage.getItem(API_KEY_STORAGE_KEY) ?? '');
+  // API key state — prefer build-time env var (works on all devices), fall back to localStorage
+  const [apiKey, setApiKey] = useState(() =>
+    (import.meta.env.VITE_CLAUDE_API_KEY as string) || localStorage.getItem(API_KEY_STORAGE_KEY) || ''
+  );
   const [showApiKey, setShowApiKey] = useState(false);
   const [showKeyInput, setShowKeyInput] = useState(false);
   const [aiProgress, setAiProgress] = useState<{ done: number; total: number } | null>(null);
@@ -63,18 +65,12 @@ export default function UploadZone() {
   };
 
   const startProcessing = () => {
+    // Clear previous analysis data before starting fresh
+    setTransactions([]);
     setIsAnalyzing(true);
     setProcessing(true);
     setStep('processing');
     setProcessingStages(PROCESSING_STAGES_CONFIG.map(s => ({ ...s, progress: 0, done: false })));
-  };
-
-  const handleUseDemoData = () => {
-    if (!businessInfo) return;
-    startProcessing();
-    const txns = generateDemoTransactions(businessInfo.taxYear, businessInfo.name);
-    setTransactions(txns);
-    computeFinancials();
   };
 
   // Extract transactions from all uploaded PDFs
@@ -90,7 +86,7 @@ export default function UploadZone() {
           allTransactions.push(...txns);
           updateFileStatus(uf.id, 'done', { transactionCount: txns.length });
         } else {
-          updateFileStatus(uf.id, 'error', { errorMessage: 'No transactions detected — try demo data' });
+          updateFileStatus(uf.id, 'error', { errorMessage: 'No transactions detected in this file' });
         }
       } catch (err) {
         console.error('PDF parse error:', err);
@@ -106,12 +102,7 @@ export default function UploadZone() {
 
     const allTransactions = await extractAll();
 
-    if (allTransactions.length === 0) {
-      const demo = generateDemoTransactions(businessInfo.taxYear, businessInfo.name);
-      setTransactions(demo);
-    } else {
-      setTransactions(allTransactions);
-    }
+    setTransactions(allTransactions);
     computeFinancials();
   };
 
@@ -129,8 +120,6 @@ export default function UploadZone() {
     const allTransactions = await extractAll();
 
     if (allTransactions.length === 0) {
-      const demo = generateDemoTransactions(businessInfo.taxYear, businessInfo.name);
-      setTransactions(demo);
       computeFinancials();
       return;
     }
@@ -164,7 +153,7 @@ export default function UploadZone() {
             <span className="text-blue-400 font-medium">{businessInfo?.taxYear}</span>
           </p>
           <p className="text-slate-500 text-sm mt-1">
-            Upload all 12 monthly statements for complete analysis, or use demo data to explore the app.
+            Upload all 12 monthly statements for a complete annual analysis.
           </p>
         </div>
 
@@ -315,15 +304,6 @@ export default function UploadZone() {
             Analyze using AI
           </button>
 
-          {/* Use Demo Data */}
-          <button
-            onClick={handleUseDemoData}
-            disabled={isAnalyzing}
-            className="flex items-center justify-center gap-2 bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/40 text-emerald-400 px-5 py-3.5 rounded-xl font-semibold text-sm transition-all"
-          >
-            <Sparkles className="w-4 h-4" />
-            Use Demo Data
-          </button>
         </div>
 
         {/* Footer hints */}

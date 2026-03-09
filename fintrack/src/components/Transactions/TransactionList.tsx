@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef, useCallback } from 'react';
 import { Search, Filter, AlertTriangle, ChevronDown } from 'lucide-react';
 import { useFinancialStore } from '../../store/financialStore';
 import type { AccountCategory, Transaction } from '../../types';
@@ -32,6 +32,10 @@ const CATEGORIES: AccountCategory[] = [
   'Interest Income', 'Interest Expense', 'Bank Fees', 'Owner Distribution', 'Tax Payment', 'Loan Payment', 'Transfer', 'Uncategorized',
 ];
 
+// Default column widths in px
+const DEFAULT_COL_WIDTHS = [100, 220, 200, 160, 110, 110, 130];
+const COL_MIN = 60;
+
 export default function TransactionList() {
   const { transactions, updateTransaction } = useFinancialStore();
   const [search, setSearch] = useState('');
@@ -41,6 +45,29 @@ export default function TransactionList() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [page, setPage] = useState(1);
   const PER_PAGE = 25;
+
+  // Resizable columns
+  const [colWidths, setColWidths] = useState<number[]>(DEFAULT_COL_WIDTHS);
+  const resizingCol = useRef<{ index: number; startX: number; startW: number } | null>(null);
+
+  const onResizeStart = useCallback((e: React.MouseEvent, index: number) => {
+    e.preventDefault();
+    resizingCol.current = { index, startX: e.clientX, startW: colWidths[index] };
+
+    const onMove = (ev: MouseEvent) => {
+      if (!resizingCol.current) return;
+      const delta = ev.clientX - resizingCol.current.startX;
+      const newW = Math.max(COL_MIN, resizingCol.current.startW + delta);
+      setColWidths(prev => prev.map((w, i) => i === resizingCol.current!.index ? newW : w));
+    };
+    const onUp = () => {
+      resizingCol.current = null;
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('mouseup', onUp);
+    };
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('mouseup', onUp);
+  }, [colWidths]);
 
   const filtered = useMemo(() => {
     return transactions.filter(t => {
@@ -109,16 +136,27 @@ export default function TransactionList() {
       {/* Table */}
       <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full">
+          <table className="w-full table-fixed" style={{ minWidth: colWidths.reduce((a, b) => a + b, 0) }}>
+            <colgroup>
+              {colWidths.map((w, i) => <col key={i} style={{ width: w }} />)}
+            </colgroup>
             <thead>
               <tr className="bg-slate-800/60 border-b border-slate-700">
-                <th className="text-left text-slate-400 text-xs font-medium py-3 px-4">Date</th>
-                <th className="text-left text-slate-400 text-xs font-medium py-3 px-4">Bank Description</th>
-                <th className="text-left text-slate-400 text-xs font-medium py-3 px-4">Normalized Description</th>
-                <th className="text-left text-slate-400 text-xs font-medium py-3 px-4">Category</th>
-                <th className="text-right text-slate-400 text-xs font-medium py-3 px-4">Amount</th>
-                <th className="text-center text-slate-400 text-xs font-medium py-3 px-4">Confidence</th>
-                <th className="text-left text-slate-400 text-xs font-medium py-3 px-4">Source</th>
+                {(['Date', 'Bank Description', 'Normalized Description', 'Category', 'Amount', 'Confidence', 'Source'] as const).map((label, i) => (
+                  <th
+                    key={label}
+                    className="text-slate-400 text-xs font-medium py-3 px-4 relative select-none overflow-hidden"
+                    style={{ textAlign: label === 'Amount' ? 'right' : label === 'Confidence' ? 'center' : 'left' }}
+                  >
+                    {label}
+                    <span
+                      onMouseDown={e => onResizeStart(e, i)}
+                      className="absolute right-0 top-0 h-full w-2 cursor-col-resize flex items-center justify-center group"
+                    >
+                      <span className="w-px h-4 bg-slate-600 group-hover:bg-blue-500 transition-colors" />
+                    </span>
+                  </th>
+                ))}
               </tr>
             </thead>
             <tbody>
@@ -128,22 +166,20 @@ export default function TransactionList() {
                     <span className="text-slate-400 text-sm font-mono">{t.date}</span>
                   </td>
                   {/* Raw bank description */}
-                  <td className="py-2.5 px-4 max-w-[220px]">
+                  <td className="py-2.5 px-4 overflow-hidden">
                     <div className="flex items-center gap-1.5">
                       {(t.confidence < 70 || t.flagged) && (
                         <AlertTriangle className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />
                       )}
                       <span
-                        className="text-slate-500 text-xs font-mono truncate"
+                        className="text-slate-500 text-xs font-mono truncate block"
                         title={t.bankDescription}
                       >{t.bankDescription}</span>
                     </div>
                   </td>
                   {/* Normalized description */}
-                  <td className="py-2.5 px-4 max-w-[200px]">
-                    <div className="flex items-center gap-2">
-                      <span className="text-slate-200 text-sm truncate" title={t.description}>{t.description}</span>
-                    </div>
+                  <td className="py-2.5 px-4 overflow-hidden">
+                    <span className="text-slate-200 text-sm truncate block" title={t.description}>{t.description}</span>
                   </td>
                   <td className="py-2.5 px-4">
                     {editingId === t.id ? (
@@ -185,8 +221,8 @@ export default function TransactionList() {
                       </span>
                     </div>
                   </td>
-                  <td className="py-2.5 px-4">
-                    <span className="text-slate-500 text-xs truncate max-w-24 block">{t.sourceFile}</span>
+                  <td className="py-2.5 px-4 overflow-hidden">
+                    <span className="text-slate-500 text-xs truncate block">{t.sourceFile}</span>
                   </td>
                 </tr>
               ))}

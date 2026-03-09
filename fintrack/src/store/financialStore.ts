@@ -9,6 +9,7 @@ import type {
   AccrualAdjustment,
 } from '../types';
 import { computePnL, computeBalanceSheet, computeTaxSummary, computeVarianceAnalysis } from '../utils/financials';
+import { applyOverrides } from '../utils/categoryOverrides';
 
 const DEFAULT_STAGES: ProcessingStage[] = [
   { label: 'Parsing PDFs', description: 'Extracting text and transaction data from uploaded statements', progress: 0, done: false },
@@ -53,7 +54,7 @@ export const useFinancialStore = create<FinancialStore>((set, get) => ({
       ),
     })),
 
-  setTransactions: (transactions: Transaction[]) => set({ transactions }),
+  setTransactions: (transactions: Transaction[]) => set({ transactions: applyOverrides(transactions) }),
 
   updateTransaction: (id, updates) =>
     set(state => ({

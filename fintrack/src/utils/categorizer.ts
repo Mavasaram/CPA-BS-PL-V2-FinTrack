@@ -7,8 +7,11 @@ interface CategoryRule {
 }
 
 const RULES: CategoryRule[] = [
+  // Zelle direction-specific (must come BEFORE generic Revenue rule)
+  { keywords: ['zelle transfer'], category: 'Transfer', confidence: 88 },
+  { keywords: ['zelle received'], category: 'Revenue', confidence: 88 },
   // Revenue
-  { keywords: ['invoice', 'payment received', 'deposit', 'sale', 'revenue', 'income', 'receivable', 'stripe', 'paypal', 'square', 'zelle', 'venmo received'], category: 'Revenue', confidence: 82 },
+  { keywords: ['invoice', 'payment received', 'deposit', 'sale', 'revenue', 'income', 'receivable', 'stripe', 'paypal', 'square', 'venmo received'], category: 'Revenue', confidence: 82 },
   // Salaries
   { keywords: ['payroll', 'salary', 'wage', 'adp', 'paychex', 'gusto', 'direct deposit', 'compensation'], category: 'Salaries & Wages', confidence: 88 },
   // Rent/Lease

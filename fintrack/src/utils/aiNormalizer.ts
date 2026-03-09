@@ -27,6 +27,8 @@ Rules:
 - Positive amounts = income/deposits; negative amounts = expenses/withdrawals
 - Check payments → use payee context for category, or "Other Expense" if unknown
 - Payroll/salary deposits → "Salaries & Wages" (if deposit), "Revenue" only if clearly customer payment
+- "Zelle Transfer - [name]" = outbound payment → "Transfer" (NEVER Revenue)
+- "Zelle Received - [name]" = inbound payment → "Revenue"
 - Tax authority payments (IRS, state comptroller, EFTPS) → "Tax Payment"
 - Return ONLY a JSON array, no markdown fences, no extra text
 - Array length MUST equal the number of input transactions, in the same order`;

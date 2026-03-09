@@ -1,6 +1,7 @@
 import { useState, useMemo, useRef, useCallback } from 'react';
 import { Search, Filter, AlertTriangle, ChevronDown } from 'lucide-react';
 import { useFinancialStore } from '../../store/financialStore';
+import { saveOverride } from '../../utils/categoryOverrides';
 import type { AccountCategory, Transaction } from '../../types';
 
 const CATEGORY_COLORS: Record<string, string> = {
@@ -37,7 +38,7 @@ const DEFAULT_COL_WIDTHS = [100, 220, 200, 160, 110, 110, 130];
 const COL_MIN = 60;
 
 export default function TransactionList() {
-  const { transactions, updateTransaction } = useFinancialStore();
+  const { transactions, updateTransaction, computeFinancials } = useFinancialStore();
   const [search, setSearch] = useState('');
   const [monthFilter, setMonthFilter] = useState(0); // 0 = all
   const [categoryFilter, setCategoryFilter] = useState<AccountCategory | 'All'>('All');
@@ -84,6 +85,8 @@ export default function TransactionList() {
 
   const handleCategoryChange = (t: Transaction, cat: AccountCategory) => {
     updateTransaction(t.id, { category: cat, confidence: 100 });
+    saveOverride(t.description, cat);
+    computeFinancials();
     setEditingId(null);
   };
 

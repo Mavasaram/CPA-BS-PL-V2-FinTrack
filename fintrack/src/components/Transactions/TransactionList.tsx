@@ -19,9 +19,13 @@ const CATEGORY_COLORS: Record<string, string> = {
   'Interest Income': 'bg-emerald-500/20 text-emerald-300',
   'Interest Expense': 'bg-red-500/20 text-red-300',
   'Owner Distribution': 'bg-slate-500/20 text-slate-400',
+  'Owner Contribution': 'bg-emerald-600/20 text-emerald-400',
+  'Loan Proceeds': 'bg-blue-600/20 text-blue-400',
   'Tax Payment': 'bg-red-600/20 text-red-400',
   'Loan Payment': 'bg-orange-600/20 text-orange-400',
   Transfer: 'bg-slate-600/20 text-slate-400',
+  'Other Income': 'bg-teal-600/20 text-teal-400',
+  'Other Expense': 'bg-rose-600/20 text-rose-400',
   Uncategorized: 'bg-gray-500/20 text-gray-400',
 };
 
@@ -30,7 +34,9 @@ const MONTHS = ['All', 'Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oc
 const CATEGORIES: AccountCategory[] = [
   'Revenue', 'COGS', 'Salaries & Wages', 'Rent/Lease', 'Utilities', 'Insurance',
   'Marketing & Advertising', 'Professional Services', 'Office & Supplies', 'Equipment & Maintenance',
-  'Interest Income', 'Interest Expense', 'Bank Fees', 'Owner Distribution', 'Tax Payment', 'Loan Payment', 'Transfer', 'Uncategorized',
+  'Interest Income', 'Interest Expense', 'Bank Fees', 'Owner Distribution', 'Owner Contribution',
+  'Loan Proceeds', 'Loan Payment', 'Tax Payment', 'Transfer',
+  'Other Income', 'Other Expense', 'Uncategorized',
 ];
 
 // Default column widths in px

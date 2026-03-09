@@ -22,7 +22,12 @@
     "lucide-react": "^0.474.0",
     "react-dropzone": "^14.3.5",
     "date-fns": "^4.1.0",
-    "clsx": "^2.1.1"
+    "clsx": "^2.1.1",
+    "vite": "^6.0.5",
+    "@vitejs/plugin-react": "^4.3.4",
+    "typescript": "~5.7.2",
+    "tailwindcss": "^4.0.0",
+    "@tailwindcss/vite": "^4.0.0"
   },
   "devDependencies": {
     "@types/react": "^19.0.2",
@@ -32,11 +37,6 @@
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.16",
     "globals": "^15.14.0",
-    "typescript": "~5.7.2",
-    "typescript-eslint": "^8.18.2",
-    "vite": "^6.0.5",
-    "@vitejs/plugin-react": "^4.3.4",
-    "tailwindcss": "^4.0.0",
-    "@tailwindcss/vite": "^4.0.0"
+    "typescript-eslint": "^8.18.2"
   }
 }

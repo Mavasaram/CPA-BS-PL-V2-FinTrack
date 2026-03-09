@@ -43,3 +43,7 @@ Test Data set 1/Comparison Results/ai_transactions.csv
 
 # API keys
 .fintrack_api_key
+
+# Bank statement PDFs — sensitive financial data
+Test Data set 1/*.pdf
+Test Data set 2/*.pdf

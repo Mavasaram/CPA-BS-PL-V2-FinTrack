@@ -1,8 +1,33 @@
-import { TrendingUp, TrendingDown, DollarSign, BarChart3, Scale, FileText, AlertTriangle } from 'lucide-react';
+import { TrendingUp, TrendingDown, DollarSign, BarChart3, Scale, FileText, AlertTriangle, ExternalLink } from 'lucide-react';
 import {
   AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
 } from 'recharts';
 import { useFinancialStore } from '../../store/financialStore';
+import type { DrilldownFilter } from '../../types';
+
+const DRILLDOWN_CONFIGS: Record<string, DrilldownFilter> = {
+  revenue: {
+    label: 'Total Revenue',
+    categories: ['Revenue', 'Other Income'],
+  },
+  netIncome: {
+    label: 'Net Income',
+    categories: [
+      'Revenue', 'Other Income', 'Interest Income', 'Interest Expense',
+      'COGS', 'Salaries & Wages', 'Rent/Lease', 'Utilities', 'Insurance',
+      'Marketing & Advertising', 'Professional Services', 'Office & Supplies',
+      'Equipment & Maintenance', 'Bank Fees', 'Other Expense', 'Uncategorized',
+    ],
+  },
+  assets: {
+    label: 'Total Assets',
+    categories: null,
+  },
+  taxLiability: {
+    label: 'Est. Tax Liability',
+    categories: ['Revenue', 'Other Income', 'Interest Income'],
+  },
+};
 
 const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
@@ -25,11 +50,16 @@ interface KpiCardProps {
   icon: React.ReactNode;
   trend?: 'up' | 'down' | 'neutral';
   color: string;
+  onClick?: () => void;
 }
 
-function KpiCard({ label, value, sub, icon, trend, color }: KpiCardProps) {
+function KpiCard({ label, value, sub, icon, trend, color, onClick }: KpiCardProps) {
   return (
-    <div className={`bg-slate-900 border border-slate-800 rounded-xl p-5 relative overflow-hidden`}>
+    <div
+      className={`bg-slate-900 border border-slate-800 rounded-xl p-5 relative overflow-hidden transition-colors
+        ${onClick ? 'cursor-pointer hover:border-slate-600 hover:bg-slate-800/50 group' : ''}`}
+      onClick={onClick}
+    >
       <div className={`absolute top-0 right-0 w-24 h-24 rounded-full blur-2xl opacity-10 ${color}`} />
       <div className="flex items-start justify-between mb-3">
         <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${color} bg-opacity-20`}>
@@ -41,6 +71,9 @@ function KpiCard({ label, value, sub, icon, trend, color }: KpiCardProps) {
       <div className="text-2xl font-bold text-white mb-1">{value}</div>
       <div className="text-slate-400 text-sm">{label}</div>
       {sub && <div className="text-xs text-slate-500 mt-0.5">{sub}</div>}
+      {onClick && (
+        <ExternalLink className="absolute bottom-3 right-3 w-3 h-3 text-slate-600 opacity-0 group-hover:opacity-100 transition-opacity" />
+      )}
     </div>
   );
 }
@@ -62,7 +95,11 @@ function CustomTooltip({ active, payload, label }: any) {
   );
 }
 
-export default function Dashboard() {
+interface DashboardProps {
+  onDrilldown: (f: DrilldownFilter) => void;
+}
+
+export default function Dashboard({ onDrilldown }: DashboardProps) {
   const { pnl, balanceSheet, taxSummary, transactions, businessInfo } = useFinancialStore();
 
   if (!pnl || !balanceSheet || !taxSummary || !businessInfo) return null;
@@ -104,6 +141,7 @@ export default function Dashboard() {
           icon={<DollarSign className="w-5 h-5 text-blue-400" />}
           color="bg-blue-500"
           trend="up"
+          onClick={() => onDrilldown(DRILLDOWN_CONFIGS.revenue)}
         />
         <KpiCard
           label="Net Income"
@@ -112,6 +150,7 @@ export default function Dashboard() {
           icon={<TrendingUp className="w-5 h-5 text-emerald-400" />}
           color="bg-emerald-500"
           trend={pnl.netIncomeAfterTax > 0 ? 'up' : 'down'}
+          onClick={() => onDrilldown(DRILLDOWN_CONFIGS.netIncome)}
         />
         <KpiCard
           label="Total Assets"
@@ -119,6 +158,7 @@ export default function Dashboard() {
           sub={`Working capital: ${fmt(balanceSheet.workingCapital)}`}
           icon={<Scale className="w-5 h-5 text-violet-400" />}
           color="bg-violet-500"
+          onClick={() => onDrilldown(DRILLDOWN_CONFIGS.assets)}
         />
         <KpiCard
           label="Est. Tax Liability"
@@ -127,6 +167,7 @@ export default function Dashboard() {
           icon={<FileText className="w-5 h-5 text-amber-400" />}
           color="bg-amber-500"
           trend="neutral"
+          onClick={() => onDrilldown(DRILLDOWN_CONFIGS.taxLiability)}
         />
       </div>
 

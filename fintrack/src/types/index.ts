@@ -230,6 +230,13 @@ export interface VarianceRow {
   rootCause: string;
 }
 
+// ─── Drilldown Filter ────────────────────────────────────────────────────────
+
+export interface DrilldownFilter {
+  label: string;
+  categories: AccountCategory[] | null; // null = no category restriction (show all)
+}
+
 // ─── Application State ───────────────────────────────────────────────────────
 
 export type AppStep =
@@ -274,6 +281,10 @@ export interface FinancialStore {
   balanceSheet: BalanceSheet | null;
   taxSummary: TaxSummary | null;
   varianceAnalysis: VarianceRow[];
+
+  // Drilldown
+  drilldown: DrilldownFilter | null;
+  setDrilldown: (filter: DrilldownFilter | null) => void;
 
   // Actions
   setStep: (step: AppStep) => void;

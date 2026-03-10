@@ -39,6 +39,9 @@ export const useFinancialStore = create<FinancialStore>((set, get) => ({
   balanceSheet: null,
   taxSummary: null,
   varianceAnalysis: [],
+  drilldown: null,
+
+  setDrilldown: (filter) => set({ drilldown: filter }),
 
   setStep: (step: AppStep) => set({ step }),
 
@@ -104,6 +107,7 @@ export const useFinancialStore = create<FinancialStore>((set, get) => ({
       balanceSheet: null,
       taxSummary: null,
       varianceAnalysis: [],
+      drilldown: null,
       adjustments: [
         { id: '1', type: 'AccountsReceivable', description: 'Outstanding client invoices', amount: 18500, category: 'Revenue' },
         { id: '2', type: 'AccountsPayable', description: 'Unpaid vendor invoices', amount: 9200, category: 'COGS' },

@@ -1,5 +1,5 @@
-import { useState, useMemo, useRef, useCallback } from 'react';
-import { Search, Filter, AlertTriangle, ChevronDown } from 'lucide-react';
+import { useState, useMemo, useRef, useCallback, useEffect } from 'react';
+import { Search, Filter, AlertTriangle, ChevronDown, BarChart3, X } from 'lucide-react';
 import { useFinancialStore } from '../../store/financialStore';
 import { saveOverride } from '../../utils/categoryOverrides';
 import type { AccountCategory, Transaction } from '../../types';
@@ -44,7 +44,7 @@ const DEFAULT_COL_WIDTHS = [100, 220, 200, 160, 110, 110, 130];
 const COL_MIN = 60;
 
 export default function TransactionList() {
-  const { transactions, updateTransaction, computeFinancials } = useFinancialStore();
+  const { transactions, updateTransaction, computeFinancials, drilldown, setDrilldown } = useFinancialStore();
   const [search, setSearch] = useState('');
   const [monthFilter, setMonthFilter] = useState(0); // 0 = all
   const [categoryFilter, setCategoryFilter] = useState<AccountCategory | 'All'>('All');
@@ -76,15 +76,18 @@ export default function TransactionList() {
     window.addEventListener('mouseup', onUp);
   }, [colWidths]);
 
+  useEffect(() => { setPage(1); }, [drilldown]);
+
   const filtered = useMemo(() => {
     return transactions.filter(t => {
       if (search && !t.description.toLowerCase().includes(search.toLowerCase())) return false;
       if (monthFilter > 0 && t.month !== monthFilter) return false;
       if (categoryFilter !== 'All' && t.category !== categoryFilter) return false;
       if (showFlagged && t.confidence >= 70 && !t.flagged) return false;
+      if (drilldown?.categories && !drilldown.categories.includes(t.category)) return false;
       return true;
     });
-  }, [transactions, search, monthFilter, categoryFilter, showFlagged]);
+  }, [transactions, search, monthFilter, categoryFilter, showFlagged, drilldown]);
 
   const paginated = filtered.slice((page - 1) * PER_PAGE, page * PER_PAGE);
   const totalPages = Math.ceil(filtered.length / PER_PAGE);
@@ -102,6 +105,22 @@ export default function TransactionList() {
         <h2 className="text-2xl font-bold text-white">Transactions</h2>
         <p className="text-slate-400 text-sm mt-1">{transactions.length} total transactions · {filtered.length} shown</p>
       </div>
+
+      {drilldown && (
+        <div className="flex items-center justify-between px-4 py-2.5 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+          <div className="flex items-center gap-2 text-sm text-blue-300">
+            <BarChart3 className="w-4 h-4 text-blue-400 flex-shrink-0" />
+            <span>Filtered by: <span className="font-semibold">{drilldown.label}</span></span>
+          </div>
+          <button
+            onClick={() => setDrilldown(null)}
+            className="flex items-center gap-1.5 text-xs text-blue-400 hover:text-white transition-colors px-2 py-1 rounded hover:bg-slate-700"
+          >
+            <X className="w-3.5 h-3.5" />
+            Clear filter
+          </button>
+        </div>
+      )}
 
       {/* Filters */}
       <div className="flex flex-wrap gap-3">

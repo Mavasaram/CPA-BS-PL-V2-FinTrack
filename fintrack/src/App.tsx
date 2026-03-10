@@ -13,7 +13,7 @@ import TransactionList from './components/Transactions/TransactionList';
 import AdjustmentsPanel from './components/Transactions/AdjustmentsPanel';
 
 export default function App() {
-  const { step, setStep, processingStages } = useFinancialStore();
+  const { step, setStep, processingStages, setDrilldown } = useFinancialStore();
   const [activeTab, setActiveTab] = useState('dashboard');
 
   const handleProcessingComplete = () => {
@@ -59,7 +59,11 @@ export default function App() {
           </div>
 
           {/* Content */}
-          {activeTab === 'dashboard' && <Dashboard />}
+          {activeTab === 'dashboard' && (
+            <Dashboard
+              onDrilldown={(f) => { setDrilldown(f); setActiveTab('transactions'); }}
+            />
+          )}
           {activeTab === 'pnl' && <PnLStatement />}
           {activeTab === 'balance-sheet' && <BalanceSheetView />}
           {activeTab === 'tax-summary' && <TaxSummaryView />}

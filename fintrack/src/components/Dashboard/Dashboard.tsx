@@ -21,7 +21,13 @@ const DRILLDOWN_CONFIGS: Record<string, DrilldownFilter> = {
   },
   assets: {
     label: 'Total Assets',
-    categories: null,
+    categories: [
+      'Revenue', 'Other Income', 'Interest Income', 'Interest Expense',
+      'COGS', 'Salaries & Wages', 'Rent/Lease', 'Utilities', 'Insurance',
+      'Marketing & Advertising', 'Professional Services', 'Office & Supplies',
+      'Equipment & Maintenance', 'Bank Fees', 'Other Expense', 'Uncategorized',
+      'Owner Contribution', 'Loan Proceeds',
+    ],
   },
   taxLiability: {
     label: 'Est. Tax Liability',
